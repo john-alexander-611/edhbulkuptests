@@ -12,7 +12,6 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -25,35 +24,36 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    headless: false,
+  /*  headless: false,
     launchOptions: {
       slowMo: 1000, // milliseconds delay between actions
-    },
-  /* Base URL to use in actions like `await page.goto('')`. */
-  // baseURL: 'http://localhost:3000',
+    }, */
 
-  /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-  trace: 'on-first-retry',
-},
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    trace: 'on-first-retry',
+  },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      testDir: './tests/ui',
+      use: { ...devices['Desktop Chrome'], baseURL: 'https://www.edhbulkup.com/' },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      testDir: './tests/ui',
+      use: { ...devices['Desktop Firefox'], baseURL: 'https://www.edhbulkup.com/' },
     },
 
-    {
+    /*{
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      testDir: './tests/ui',
+      use: { ...devices['Desktop Safari'], baseURL: 'https://www.edhbulkup.com/' },
     },
 
-    /* Test against mobile viewports. */
+     Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
     //   use: { ...devices['Pixel 5'] },
@@ -72,6 +72,14 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
+
+    {
+      name: 'api',
+      testDir: './tests/api',
+      use: {
+        baseURL: 'https://edhbulkup-api.onrender.com',
+      },
+    },
   ],
 
   /* Run your local dev server before starting the tests */
